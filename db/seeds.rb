@@ -5,3 +5,16 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+people = Person.create([
+                         { name: 'Emily', type: 'teacher' },
+                         { name: 'Bob', type: 'teacher' },
+                         { name: 'Mary', type: 'teacher' }                         
+                       ])
+
+EVENT_TYPES = ['clock-in', 'clock-out']
+people.each do |person|
+  (0..10).each do |i|
+    index = i % 2
+    Event.create(person: person, type: EVENT_TYPES[index])
+  end
+end
