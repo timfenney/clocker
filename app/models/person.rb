@@ -2,7 +2,7 @@ class Person < ApplicationRecord
   self.inheritance_column = nil
 
   def self.autocomplete(query)
-    Person.where("name ILIKE ?", "#{sanitize_sql_like(query)}%")
+    Person.where("name ILIKE ?", "#{sanitize_sql_like(query)}%").order(:name).limit(10)
   end
   
   def clocked_in?
