@@ -3,7 +3,12 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.all
+    trusted = params.permit(:person_id)
+    if trusted.include? :person_id
+      @events = Event.where(person_id: trusted[:person_id])
+    else
+      @events = Event.all
+    end
 
     render json: @events
   end
