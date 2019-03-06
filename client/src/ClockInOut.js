@@ -46,19 +46,63 @@ const styles = theme => ({
   },
 });
 
-class SignIn extends React.Component {
+const buttonLabelForPerson = (person) => {
+  if (!person) {
+    return 'Clock In / Out';
+  }
+  if (person.clocked_in) {
+    return 'Clock Out';
+  } else {
+    return 'Clock In';
+  }
+};
+
+const actionDescriptionForPerson = (person) => {
+  if (!person) {
+    return 'Start typing a name and choose a person to begin.';
+  }
+  if (person.clocked_in) {
+    return `${person.name} is currently clocked in. Clock ${person.name} out?`;
+  } else {
+    return `${person.name} is currently clocked out. Clock ${person.name} in?`;
+  }
+}
+
+const clockInOut = (url, options, callback) => {
+  window.fetch(url, options)
+      .then(response => response.json())
+      .then(data => {
+          callback(data.person);
+      })
+      .catch(error => console.log(error));
+}
+
+class ClockInOut extends React.Component {
   constructor(props) {
     super(props);
-    const { classes } = props;
-    const { onSelectPerson } = props;
-    this.state = {
-        classes: classes,
-        onSelectPerson: onSelectPerson
-    };
+    this.myClockInOut = this.myClockInOut.bind(this);
   }
 
+  myClockInOut() {
+    const { person, onSelectPerson } = this.props;
+    const operation = person.clocked_in ? 'clock-out' : 'clock-in';
+    const url = '/api/events';
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({
+        event: {
+          person_id: person.id,
+          type: operation
+        }
+      }),
+      headers: {'Content-Type': 'application/json'}
+    };
+
+    return clockInOut(url, options, onSelectPerson);
+  };
+
   render() {
-    const classes = this.state.classes;
+    const { person, classes, onSelectPerson, onViewLog } = this.props;
     return (
         <main className={classes.main}>
         <CssBaseline />
@@ -71,17 +115,31 @@ class SignIn extends React.Component {
             </Typography>
             <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
-                <IntegrationReactSelect onSelectPerson={this.state.onSelectPerson} />
+                <IntegrationReactSelect onSelectPerson={onSelectPerson} />
             </FormControl>
+            <p>{actionDescriptionForPerson(person)}</p>
             <Button
-                type="submit"
+                disabled={!person}
+                onClick={this.myClockInOut}
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
             >
-                Clock In / Out
+            { buttonLabelForPerson(person) }
             </Button>
+            { 
+              person ? <Button
+                          onClick={onViewLog}
+                          fullWidth
+                          variant="contained"
+                          color="secondary"
+                          className={classes.submit}
+                        >
+                        View Log
+                        </Button>
+                        : ''
+            }
             </form>
         </Paper>
         </main>
@@ -89,8 +147,8 @@ class SignIn extends React.Component {
   }
 }
 
-SignIn.propTypes = {
+ClockInOut.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(ClockInOut);

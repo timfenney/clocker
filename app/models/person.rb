@@ -6,8 +6,9 @@ class Person < ApplicationRecord
   end
   
   def clocked_in?
-    last_event = events.reverse_order.limit(1)
-    return last_event == Event::CLOCK_IN
+    last_event = events.reverse_order.limit(1).first
+    return last_event.type == Event::CLOCK_IN if last_event.present?
+    return false
   end
 
   def as_json(options = {})

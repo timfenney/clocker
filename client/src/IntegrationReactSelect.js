@@ -18,16 +18,11 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
 const loadOptions = (inputValue, callback) => {
-    console.log(inputValue);
     const url = '/api/people?autocomplete=' + inputValue;
-    console.log(url);
     window.fetch(url)
         .then(response => response.json())
         .then(requestResults => {
-            console.log(requestResults);
             const suggestions = requestResults.map(result => {
-                console.log('result!!!!!!!!!!!!!!!111!!!');
-                console.log(result);
                 return {
                     value: result,
                     label: result.name
@@ -41,7 +36,7 @@ const loadOptions = (inputValue, callback) => {
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 250,
+    height: 80, /* 250 */
   },
   input: {
     display: 'flex',
@@ -204,7 +199,10 @@ class IntegrationReactSelect extends React.Component {
         [name]: value,
     });
     const { onSelectPerson } = this.props;
-    onSelectPerson(value.value);
+    if (value && 'value' in value) {
+        value = value.value;
+    }
+    onSelectPerson(value);
   };
 
   render() {
