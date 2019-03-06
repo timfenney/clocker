@@ -7,8 +7,9 @@ class EventsController < ApplicationController
     if trusted.include? :person_id
       @events = Event.where(person_id: trusted[:person_id])
     else
-      @events = Event.all
+      @events = Event
     end
+    @events = @events.includes(:person)
 
     render json: @events
   end

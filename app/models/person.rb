@@ -2,7 +2,7 @@ class Person < ApplicationRecord
   self.inheritance_column = nil
 
   def self.autocomplete(query)
-    Person.where("name ILIKE ?", "#{sanitize_sql_like(query)}%").order(:name).limit(10)
+    Person.includes(:events).where("name ILIKE ?", "#{sanitize_sql_like(query)}%").order(:name).limit(10)
   end
   
   def clocked_in?
@@ -11,9 +11,11 @@ class Person < ApplicationRecord
     return false
   end
 
-  def as_json(options = {})
+  def as_json(options = {}, without_clocked_in=false)
     hash = super(options)
-    hash[:clocked_in] = clocked_in?
+    unless without_clocked_in
+      hash[:clocked_in] = clocked_in?
+    end
     hash
   end
   

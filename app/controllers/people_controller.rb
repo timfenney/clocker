@@ -7,7 +7,7 @@ class PeopleController < ApplicationController
     if perm_params[:autocomplete].present?
       @people = Person.autocomplete(perm_params[:autocomplete].to_s)
     else
-      @people = Person.all
+      @people = Person.includes(:events).all
     end
 
     render json: @people

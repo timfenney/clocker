@@ -7,7 +7,7 @@ class Event < ApplicationRecord
 
   def as_json(options = {})
     hash = super(options)
-    hash[:person] = person.as_json
+    hash[:person] = person.as_json({}, true)
     hash
   end
 end
