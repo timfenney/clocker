@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import SignIn from './SignIn';
 
 class App extends Component {
-  componentDidMount() {
-
+  handlePerson = (person) => {
+    this.setState({person: person});
+    console.log('yodawg', person);
   }
   render() {
     return (
-      <SignIn />
+      <SignIn onSelectPerson={this.handlePerson} />
     );
   }
 }

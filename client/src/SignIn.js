@@ -50,7 +50,11 @@ class SignIn extends React.Component {
   constructor(props) {
     super(props);
     const { classes } = props;
-    this.state = {classes: classes};
+    const { onSelectPerson } = props;
+    this.state = {
+        classes: classes,
+        onSelectPerson: onSelectPerson
+    };
   }
 
   render() {
@@ -67,7 +71,7 @@ class SignIn extends React.Component {
             </Typography>
             <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
-                <IntegrationReactSelect />
+                <IntegrationReactSelect onSelectPerson={this.state.onSelectPerson} />
             </FormControl>
             <Button
                 type="submit"

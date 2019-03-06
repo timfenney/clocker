@@ -29,7 +29,7 @@ const loadOptions = (inputValue, callback) => {
                 console.log('result!!!!!!!!!!!!!!!111!!!');
                 console.log(result);
                 return {
-                    value: result.id,
+                    value: result,
                     label: result.name
                 };
             });
@@ -194,15 +194,17 @@ const components = {
 };
 
 class IntegrationReactSelect extends React.Component {
-  state = {
-    single: null,
-    multi: null,
-  };
+    state = {
+        single: null,
+        multi: null,
+    };
 
   handleChange = name => value => {
     this.setState({
-      [name]: value,
+        [name]: value,
     });
+    const { onSelectPerson } = this.props;
+    onSelectPerson(value.value);
   };
 
   render() {
