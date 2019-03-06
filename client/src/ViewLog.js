@@ -97,19 +97,17 @@ const styles = theme => ({
 });
 
 const loadEvents = (person, callback) => {
+    let url = '/api/events';
     if (person && 'id' in person) {
         const person_id = person.id;
-        const url = `/api/events?person_id=${person_id}`;
-        window.fetch(url)
-            .then(response => response.json())
-            .then(events => {
-                callback(events);
-            })
-            .catch(error => console.log(error));
-    } else {
-        console.log('no person');
-        console.log(person);
+        url += `?person_id=${person_id}`;
     }
+    window.fetch(url)
+    .then(response => response.json())
+    .then(events => {
+        callback(events);
+    })
+    .catch(error => console.log(error));
 }
 
 class ViewLog extends React.Component {
@@ -142,10 +140,10 @@ class ViewLog extends React.Component {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Typography variant="h4" gutterBottom component="h2">
-            { person.name }'s Activity Log
+            { person && 'name' in person ? `${person.name}'s Activity Log` : 'Activity Log' }
           </Typography>
           <div className={classes.tableContainer}>
-            <SimpleTable events={events} />
+            <SimpleTable events={events} person={person} />
           </div>
         </main>
       </div>

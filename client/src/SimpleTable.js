@@ -25,56 +25,8 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 function SimpleTable(props) {
-    const { classes, events } = props;
+    const { classes, events, person } = props;
     const maybeEvents = events || [];
-    // const { classes } = props;
-    // const events = [
-    //     {
-    //         id: 1,
-    //         person_id: 1,
-    //         type: "clock-in",
-    //         created_at: "2019-03-06T01:44:20.753Z",
-    //         updated_at: "2019-03-06T01:44:20.753Z",
-    //         person: {
-    //             id: 1,
-    //             name: "Emily",
-    //             type: "teacher",
-    //             created_at: "2019-03-06T01:44:20.692Z",
-    //             updated_at: "2019-03-06T01:44:20.692Z",
-    //             clocked_in: false
-    //         }
-    //     },
-    //     {
-    //         id: 2,
-    //         person_id: 1,
-    //         type: "clock-out",
-    //         created_at: "2019-03-06T01:44:20.756Z",
-    //         updated_at: "2019-03-06T01:44:20.756Z",
-    //         person: {
-    //             id: 1,
-    //             name: "Emily",
-    //             type: "teacher",
-    //             created_at: "2019-03-06T01:44:20.692Z",
-    //             updated_at: "2019-03-06T01:44:20.692Z",
-    //             clocked_in: false
-    //         }
-    //     },
-    //     {
-    //         id: 3,
-    //         person_id: 1,
-    //         type: "clock-in",
-    //         created_at: "2019-03-06T01:44:20.758Z",
-    //         updated_at: "2019-03-06T01:44:20.758Z",
-    //         person: {
-    //             id: 1,
-    //             name: "Emily",
-    //             type: "teacher",
-    //             created_at: "2019-03-06T01:44:20.692Z",
-    //             updated_at: "2019-03-06T01:44:20.692Z",
-    //             clocked_in: false
-    //         }
-    //     }
-    // ];
 
   return (
     <Paper className={classes.root}>
@@ -82,6 +34,9 @@ function SimpleTable(props) {
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
+            {
+                person ? '' : <TableCell align="right">Name</TableCell>
+            }
             <TableCell align="right">Type</TableCell>
             <TableCell align="right">Timestamp</TableCell>
           </TableRow>
@@ -92,6 +47,9 @@ function SimpleTable(props) {
               <TableCell component="th" scope="row">
                 {e.id}
               </TableCell>
+              {
+                  person ? '' : <TableCell align="right">{e.person.name}</TableCell>
+              }
               <TableCell align="right">{e.type}</TableCell>
               <TableCell align="right">{e.created_at}</TableCell>
             </TableRow>

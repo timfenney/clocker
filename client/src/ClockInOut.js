@@ -128,18 +128,15 @@ class ClockInOut extends React.Component {
             >
             { buttonLabelForPerson(person) }
             </Button>
-            { 
-              person ? <Button
-                          onClick={onViewLog}
-                          fullWidth
-                          variant="contained"
-                          color="secondary"
-                          className={classes.submit}
-                        >
-                        View Log
-                        </Button>
-                        : ''
-            }
+              <Button
+                onClick={onViewLog}
+                fullWidth
+                variant="contained"
+                color="secondary"
+                className={classes.submit}
+              >
+                View Log
+              </Button>
             </form>
         </Paper>
         </main>
