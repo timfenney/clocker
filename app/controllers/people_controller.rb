@@ -3,7 +3,12 @@ class PeopleController < ApplicationController
 
   # GET /people
   def index
-    @people = Person.all
+    perm_params = params.permit(:autocomplete)
+    if perm_params[:autocomplete].present?
+      @people = Person.autocomplete(perm_params[:autocomplete].to_s)
+    else
+      @people = Person.all
+    end
 
     render json: @people
   end
@@ -11,6 +16,16 @@ class PeopleController < ApplicationController
   # GET /people/1
   def show
     render json: @person
+  end
+
+  # GET /people/autocomplete
+  def autocomplete
+    @person = Person.autocomplete
+    if @person
+      render json: @person
+    else
+      render json: {}, status: :unprocessable_entity
+    end
   end
 
   # POST /people
